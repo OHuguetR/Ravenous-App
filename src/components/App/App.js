@@ -1,6 +1,6 @@
 /*En aquest document és on es renderitzen tots els altres components */
 
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import "./App.css";
 import BusinessList from "../BusinessList/BusinessList";
 import SearchBar from "../SearchBar/SearchBar";
@@ -10,13 +10,16 @@ const apiKey =
 
 export default function App() {
   const [businesses, setBusiness] = useState([]);
-  /* useEffect(() => {
-    search("", "barcelona", "best_match");
+
+  useEffect(() => {
+    //No em renderitza la primera vegada que s'inicialitza amb Barcelona.
+    searchYelp("", "Madrid", "best_match");
   }, []);
 
   useEffect(() => {
-    document.title = `Ravenous | ${businesses?.city}`;
-  },[businesses]); */
+    // No se com posar la propietat correcte
+    document.title = `Ravenous | ${businesses[0]?.city ?? ""}`;
+  }, [businesses]);
 
   async function search(term, location, sortBy) {
     try {
@@ -49,6 +52,7 @@ export default function App() {
       throw alert(error);
     }
   }
+
   async function searchYelp(term, location, sortBy) {
     const businesses = await search(term, location, sortBy);
     setBusiness(businesses);
